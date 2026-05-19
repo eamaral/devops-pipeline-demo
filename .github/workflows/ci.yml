@@ -9,7 +9,8 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-
+  workflow_dispatch:
+  
 jobs:
   ci:
     name: Pipeline de CI

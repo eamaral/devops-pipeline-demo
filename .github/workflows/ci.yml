@@ -1,0 +1,45 @@
+name: CI
+
+# Este workflow materializa o pipeline minimo discutido na aula:
+# checkout -> dependencias -> lint -> testes -> artefato.
+# Cada etapa e um "gate" que aumenta a confianca antes da proxima promocao.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    name: Pipeline de CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Testes
+        run: npm test
+
+      - name: Gerar artefato
+        run: npm run build
+
+      - name: Publicar artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: devops-pipeline-demo-${{ github.sha }}
+          path: dist/
+          retention-days: 7

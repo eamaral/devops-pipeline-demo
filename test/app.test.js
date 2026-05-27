@@ -21,4 +21,30 @@ describe('devops-pipeline-demo API', () => {
     expect(res.status).toBe(400);
     expect(res.body.error).toBeDefined();
   });
+
+  describe('GET /sum - casos adicionais', () => {
+    test('soma corretamente numeros negativos', async () => {
+      const res = await request(app).get('/sum').query({ a: -10, b: -5 });
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual({ result: -15 });
+    });
+
+    test('soma corretamente numeros decimais', async () => {
+      const res = await request(app).get('/sum').query({ a: 1.5, b: 2.25 });
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual({ result: 3.75 });
+    });
+
+    test('retorna 400 quando o parametro "a" esta ausente', async () => {
+      const res = await request(app).get('/sum').query({ b: 3 });
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBeDefined();
+    });
+
+    test('retorna 400 quando ambos os parametros estao ausentes', async () => {
+      const res = await request(app).get('/sum');
+      expect(res.status).toBe(400);
+      expect(res.body.error).toBeDefined();
+    });
+  });
 });

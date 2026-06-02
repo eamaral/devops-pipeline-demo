@@ -34,6 +34,13 @@ jobs:
 
       - name: Testes
         run: npm test
+        # `vars` sao configuracoes nao sensiveis (aparecem em texto puro no log).
+        # `secrets` sao valores sensiveis (sao mascarados automaticamente no log).
+        # Definir em: Settings > Secrets and variables > Actions.
+        env:
+          APP_ENV: ${{ vars.APP_ENV }}
+          APP_VERSION: ${{ vars.APP_VERSION }}
+          API_TOKEN: ${{ secrets.API_TOKEN }}
 
       - name: Gerar artefato
         run: npm run build
@@ -44,3 +51,14 @@ jobs:
           name: devops-pipeline-demo-${{ github.sha }}
           path: dist/
           retention-days: 7
+
+      # Passo didatico: mostra como secrets/vars sao injetados em um "deploy".
+      # Note no log do Actions: o valor de API_TOKEN aparece como `***`.
+      - name: Simular deploy (exemplo de uso de secrets)
+        env:
+          APP_ENV: ${{ vars.APP_ENV }}
+          API_TOKEN: ${{ secrets.API_TOKEN }}
+        run: |
+          echo "Deploy para ambiente: $APP_ENV"
+          echo "Token recebido (sera mascarado nos logs): $API_TOKEN"
+          echo "Tamanho do token: ${#API_TOKEN} caracteres"

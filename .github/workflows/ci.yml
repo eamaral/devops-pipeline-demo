@@ -1,9 +1,5 @@
 name: CI
 
-# Este workflow materializa o pipeline minimo discutido na aula:
-# checkout -> dependencias -> lint -> testes -> artefato.
-# Cada etapa e um "gate" que aumenta a confianca antes da proxima promocao.
-
 on:
   push:
     branches: [main]
@@ -34,9 +30,7 @@ jobs:
 
       - name: Testes
         run: npm test
-        # `vars` sao configuracoes nao sensiveis (aparecem em texto puro no log).
-        # `secrets` sao valores sensiveis (sao mascarados automaticamente no log).
-        # Definir em: Settings > Secrets and variables > Actions.
+
         env:
           APP_ENV: ${{ vars.APP_ENV }}
           APP_VERSION: ${{ vars.APP_VERSION }}
@@ -52,8 +46,6 @@ jobs:
           path: dist/
           retention-days: 7
 
-      # Passo didatico: mostra como secrets/vars sao injetados em um "deploy".
-      # Note no log do Actions: o valor de API_TOKEN aparece como `***`.
       - name: Simular deploy (exemplo de uso de secrets)
         env:
           APP_ENV: ${{ vars.APP_ENV }}

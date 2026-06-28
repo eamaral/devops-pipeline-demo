@@ -1,0 +1,14 @@
+name: ScaleQuality
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  scalequality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ScaleQuality continuous check
+        run: npx @scalequality/check --token "$SQ_TOKEN" --project 5c429363-db89-4e17-8408-0b5df045f2ef --host https://staging.scalequality.io
+        env:
+          SQ_TOKEN: ${{ secrets.SQ_TOKEN }}

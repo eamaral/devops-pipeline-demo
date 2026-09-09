@@ -1,0 +1,1 @@
+module.exports = { testEnvironment: "node", collectCoverage: true, collectCoverageFrom: ["**/*.{ts,tsx,js,jsx}", "!**/node_modules/**", "!**/dist/**", "!**/build/**", "!**/coverage/**", "!**/*.d.ts", "!**/*.test.*", "!**/*.spec.*", "!**/*.config.*"] };
